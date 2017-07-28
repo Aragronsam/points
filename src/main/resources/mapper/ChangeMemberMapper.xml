@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yonghui.mapper.ChangeMemberMapper">
+
+    <resultMap id="changeMemberMap" type="com.yonghui.entity.ChangeMember">
+        <id column="id" property="id"/>
+        <result column="iid" property="iid"/>
+        <result column="member_id" property="memberId"/>
+        <result column="integral" property="integral"/>
+        <result column="status_flag" property="statusFlag"/>
+        <result column="wechat_bonus_flag" property="wechatBonusFlag"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="last_change_time" property="lastChangeTime"/>
+    </resultMap>
+
+    <insert id="insertBatch" useGeneratedKeys="true" parameterType="com.yonghui.entity.ChangeMember">
+        INSERT INTO change_member
+        (iid, member_id, integral, create_time, update_time, status_flag, wechat_bonus_flag, last_change_time)
+        VALUES
+        <foreach collection ="list" item="changeMember" index="index" separator=",">
+            (#{changeMember.iid}, #{changeMember.memberId}, #{changeMember.integral}, #{changeMember.createTime}, #{changeMember.updateTime}, #{changeMember.statusFlag}, #{changeMember.wechatBonusFlag}, #{changeMember.lastChangeTime})
+        </foreach>
+    </insert>
+
+    <insert id="insert" parameterType="com.yonghui.entity.ChangeMember">
+        INSERT INTO change_member
+        (iid, member_id, integral, create_time, update_time, status_flag, wechat_bonus_flag, last_change_time)
+        VALUES
+        (#{iid}, #{memberId}, #{integral}, #{createTime}, #{updateTime}, #{statusFlag}, #{wechatBonusFlag}, #{lastChangeTime})
+    </insert>
+
+
+    <select id="findByMemberId" resultMap="changeMemberMap">
+        SELECT * FROM change_member WHERE member_id = #{memberId}
+    </select>
+</mapper>
