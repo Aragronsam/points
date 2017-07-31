@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -21,9 +20,9 @@ public class ScheduledTasks {
     @Autowired
     private ChangeMemberService changeMemberService;
 
-    @Scheduled(fixedRate = 50000)
+    @Scheduled(fixedRate = 1000 * 60 * 5)
     //@Scheduled(cron = "0 55 4 * * ?")
-    @Transactional
+    //@Transactional(value = "tm", propagation = Propagation.REQUIRED)
     public void scheduledTask() {
         try {
             changeMemberService.changeMemberTask();

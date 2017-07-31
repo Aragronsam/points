@@ -21,8 +21,8 @@ public interface Constants {
     /**
      * xml源文件地址
      */
-    String SOURCE_XML_FILEPATH = "/Users/aragron/Desktop/points/sources";
-    //String SOURCE_XML_FILEPATH = "/CRM1001/PENDING";
+    String SOURCE_XML_FILEPATH = "/CRM1001/PENDING";
+    //String SOURCE_XML_FILEPATH = "/Users/aragron/Desktop/points/sources";
 
     /**
      * xml处理成功存放目录

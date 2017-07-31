@@ -6,7 +6,6 @@ import com.yonghui.mapper.ChangeMemberMapper;
 import com.yonghui.service.ChangeMemberService;
 import com.yonghui.utils.Constants;
 import com.yonghui.utils.ParserUtil;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,17 +27,11 @@ import java.util.List;
  */
 @Service
 @Slf4j
-@Transactional(value = "tm", propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+@Transactional(value = "tm", propagation = Propagation.REQUIRED)
 public class ChangeMemberServiceImpl implements ChangeMemberService{
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private ChangeMemberMapper changeMemberMapper;
-
-    @AllArgsConstructor
-    class User {
-        int id;
-        String name;
-    }
 
     /**
      * 会员定时任务
@@ -57,11 +50,11 @@ public class ChangeMemberServiceImpl implements ChangeMemberService{
             if (changeMembers_error != null &&
                     !changeMembers_error.isEmpty() &&
                     currentHandleXml != null) {
-                log.info("xml数据不完整");
                 ParserUtil.moveFile(Constants.SOURCE_XML_FILEPATH + "/" + currentHandleXml.getName(),
                         Constants.ERROR_HANDLE_DIR,
                         new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()) + "_" + currentHandleXml.getName());
-                return;
+                log.info("xml数据不完整");
+                throw new RuntimeException("xml数据不完整");
             }
             if (changeMembers == null || changeMembers.isEmpty()) {
                 log.info("changeMemberTask中changeMembers为空");
@@ -83,7 +76,6 @@ public class ChangeMemberServiceImpl implements ChangeMemberService{
                     Constants.SUCCESS_HANDLE_DIR,
                     new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()) + "_" + currentHandleXml.getName());
             log.info("会员定时任务changeMemberTask执行成功");
-            //throw new RuntimeException("我是异常");
         } catch (Exception e) {
             log.error("会员定时任务changeMemberTask出错", e);
             throw new RuntimeException("会员定时任务changeMemberTask出错", e);
